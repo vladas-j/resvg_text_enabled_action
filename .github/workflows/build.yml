@@ -1,0 +1,20 @@
+name: Build
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code from a specific tag
+        uses: actions/checkout@v4
+        with:
+          repository: 'RazrFalcon/resvg'
+          fetch-depth: 0
+
+      - name: Get the latest tag
+        run: |
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "Latest tag: $latest_tag"
+          echo "latest_tag=$latest_tag" >> $GITHUB_ENV
+      - name: Checkout latest tag
+        run: git checkout ${{ env.latest_tag }}
