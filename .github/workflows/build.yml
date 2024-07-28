@@ -23,4 +23,10 @@ jobs:
         run: |
           cd crates/c-api
           rustup target add aarch64-apple-ios
-          cargo build --release --no-default-features
+          cargo rustc --target aarch64-apple-ios --release --no-default-features -- --crate-type staticlib
+      
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.latest_tag }}
+          files: crates/c-api/target/aarch64-apple-ios/release/libresvg-capi.a
