@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout code from a specific tag
+      - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           repository: 'RazrFalcon/resvg'
@@ -18,3 +18,9 @@ jobs:
           echo "latest_tag=$latest_tag" >> $GITHUB_ENV
       - name: Checkout latest tag
         run: git checkout ${{ env.latest_tag }}
+
+      - name: Build c-api
+        run: |
+          cd crates/c-api
+          rustup target add aarch64-apple-ios
+          cargo build --release --no-default-features
