@@ -26,7 +26,8 @@ jobs:
           cd crates/c-api
           rustup target add aarch64-apple-ios
           cargo rustc --target aarch64-apple-ios --release --no-default-features -- --crate-type staticlib
-          ls target/aarch64-apple-ios/release/
+          cd target/aarch64-apple-ios/release/
+          ls
       
       # - name: Release
       #   uses: softprops/action-gh-release@v2
