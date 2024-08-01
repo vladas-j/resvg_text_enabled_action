@@ -20,8 +20,8 @@ jobs:
         #   mv android-ndk-r27 android-ndk
         #   echo "export ANDROID_NDK_ROOT=\$GITHUB_ACTION_PATH/usr/lib/android-ndk" >> $GITHUB_ENV
       
-      - name: Build c-api
-        run:
+      # - name: Build c-api
+      #   run:
 
       # - name: Checkout the repository
       #   uses: actions/checkout@v4
