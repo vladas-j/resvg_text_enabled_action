@@ -34,6 +34,11 @@ jobs:
           rustup target add aarch64-linux-android
           cargo build --target aarch64-linux-android --config target.aarch64-linux-android.linker=\"$CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER\" --release --no-default-features
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libresvg.so
+          path: target/aarch64-linux-android/release/libresvg.so
 
 
 
