@@ -2,10 +2,10 @@ name: Build
 on:
   workflow_dispatch:
 jobs:
-  build:
+  build_android:
     permissions:
       contents: write
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -21,19 +21,50 @@ jobs:
       - name: Checkout latest tag
         run: git checkout ${{ env.latest_tag }}
 
-      - name: Build c-api
+      - name: Install Android NDK
         run: |
-          cd crates/c-api
-          rustup target add aarch64-apple-ios
-          cargo build --target aarch64-apple-ios --release --no-default-features
+          sudo apt install -y google-android-ndk-r26c-installer
+          cd /usr/lib/android-ndk
+          ls
 
-      - name: Zip
-        run: |
-          cd target/aarch64-apple-ios/release
-          zip libresvg.zip libresvg.a
+  #     - name: Build c-api
+  #       run: |
+  #         cd crates/c-api
+  #         rustup target add aarch64-linux-android
+
+
+  # build_ios:
+  #   permissions:
+  #     contents: write
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout the repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: 'RazrFalcon/resvg'
+  #         fetch-depth: 0
+
+  #     - name: Get the latest tag
+  #       run: |
+  #         latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+  #         echo "Latest tag: $latest_tag"
+  #         echo "latest_tag=$latest_tag" >> $GITHUB_ENV
+  #     - name: Checkout latest tag
+  #       run: git checkout ${{ env.latest_tag }}
+
+  #     - name: Build c-api
+  #       run: |
+  #         cd crates/c-api
+  #         rustup target add aarch64-apple-ios
+  #         cargo build --target aarch64-apple-ios --release --no-default-features
+
+  #     - name: Zip
+  #       run: |
+  #         cd target/aarch64-apple-ios/release
+  #         zip libresvg.zip libresvg.a
       
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.latest_tag }}
-          files: target/aarch64-apple-ios/release/libresvg.zip
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: ${{ env.latest_tag }}
+  #         files: target/aarch64-apple-ios/release/libresvg.zip
