@@ -24,25 +24,29 @@ jobs:
       - name: Build c-api
         run: |
           cd crates/c-api
-          rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+          rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin
           cargo build --target aarch64-apple-ios --release --no-default-features
           cargo build --target aarch64-apple-ios-sim --release --no-default-features
+          cargo build --target aarch64-apple-darwin --release --no-default-features
 
       - name: Lipo
         run: |
-          lipo -create \
-          target/aarch64-apple-ios/release/libresvg.a \
-          target/aarch64-apple-ios-sim/release/libresvg.a \
-          -output libresvg.a
+          mkdir include
+          cp crates/c-api/resvg.h include
+          xcodebuild -create-xcframework \
+          -library target/aarch64-apple-ios/release/libresvg.a -headers include \
+          -library target/aarch64-apple-ios-sim/release/libresvg.a -headers include \
+          -library target/aarch64-apple-darwin/release/libresvg.a -headers include \
+          -output resvg.xcframework
 
       - name: Zip
-        run: zip libresvg.zip libresvg.a
+        run: zip -r resvg.xcframework.zip resvg.xcframework
       
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.latest_tag }}
-          files: libresvg.zip
+          files: resvg.xcframework.zip
 
   # build_android:
   #   permissions:
