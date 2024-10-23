@@ -79,8 +79,8 @@ jobs:
         run: |
           cd crates/c-api
           rustup target add aarch64-linux-android x86_64-linux-android
-          cargo build --target aarch64-linux-android --config target.aarch64-linux-android.linker=\"$CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER\" --release --no-default-features
-          cargo build --target x86_64-linux-android --config target.x86_64-linux-android.linker=\"$CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER\" --release --no-default-features
+          cargo build --target aarch64-linux-android --config target.aarch64-linux-android.linker=\"$CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER\" --release
+          cargo build --target x86_64-linux-android --config target.x86_64-linux-android.linker=\"$CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER\" --release
 
       - name: Copy
         run: |
